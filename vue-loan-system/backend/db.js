@@ -1,13 +1,13 @@
-const Database = require('better-sqlite3');
-const db = new Database('./data.sqlite');
+const mysql = require('mysql2/promise');
 
-// Create table if it doesn't exist
-db.prepare(`
-  CREATE TABLE IF NOT EXISTS users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    email TEXT UNIQUE NOT NULL,
-    password_hash TEXT NOT NULL
-  )
-`).run();
+const pool = mysql.createPool({
+  host: 'localhost',
+  user: 'root', // or your MySQL username
+  password: '', // or your MySQL password
+  database: 'loan_system', // name of the DB you created
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
+});
 
-module.exports = db;
+module.exports = pool;

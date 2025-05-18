@@ -1,6 +1,9 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 import HelloWorld from './components/HelloWorld.vue'
+
+const auth = useAuthStore()
 </script>
 
 <template>
@@ -12,7 +15,9 @@ import HelloWorld from './components/HelloWorld.vue'
 
       <nav>
         <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/auth/login">Login</RouterLink>
+        <RouterLink v-if="!auth.isAuthenticated" to="/auth/login">Login</RouterLink>
+        <RouterLink v-if="!auth.isAuthenticated" to="/auth/register">Register</RouterLink>
+        <button v-else @click="auth.logout">Logout</button>
       </nav>
     </div>
   </header>
@@ -54,6 +59,15 @@ nav a {
 
 nav a:first-of-type {
   border: 0;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  background: #42b983;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
 }
 
 @media (min-width: 1024px) {

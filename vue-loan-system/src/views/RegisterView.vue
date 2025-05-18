@@ -1,7 +1,12 @@
 <template>
-  <div class="login-container">
-    <h2>Login</h2>
-    <form @submit.prevent="handleLogin">
+  <div class="register-container">
+    <h2>Register</h2>
+    <form @submit.prevent="handleRegister">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input v-model="name" type="name" id="name" required />
+      </div>
+
       <div class="form-group">
         <label for="email">Email</label>
         <input v-model="email" type="email" id="email" required />
@@ -13,7 +18,7 @@
       </div>
 
       <button :disabled="loading" type="submit">
-        {{ loading ? 'Logging in…' : 'Login' }}
+        {{ loading ? 'Registering…' : 'Register' }}
       </button>
     </form>
 
@@ -24,49 +29,34 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useAuthStore } from '@/stores/auth'
 import api from '/src/services/api'
 
+const name = ref('')
 const email = ref('')
 const password = ref('')
 const error = ref('')
 const loading = ref(false)
 const router = useRouter()
-const auth = useAuthStore()
 
-async function handleLogin() {
-  error.value = ''
+const handleRegister = async () => {
   loading.value = true
-
   try {
-  const { data } = await api.post('/auth/login', {
-    email: email.value,
-    password: password.value
-  })
-  console.log('Login response:', data)
-  // ✅ Clear error only after successful login
-  error.value = ''
-
-  localStorage.setItem('jwt', data.token)
-  localStorage.setItem('user', JSON.stringify(data.user))
-
-  auth.login(data.user, data.token)
-  router.push({ name: 'home' }) // or '/' if not using named routes
-} catch (err) {
-  console.error('Login error:', err)
-  error.value =
-    err.response?.data?.message ||
-    'Login failed. Please check your credentials.'
-} finally {
-  loading.value = false
+    const res = await api.post('/auth/register', {
+      name: name.value,
+      email: email.value,
+      password: password.value
+    })
+    alert('Registration successful! You can now log in.')
+  } catch (err) {
+    alert(err.response?.data?.message || 'Registration failed')
+  } finally {
+    loading.value = false
+  }
 }
-
-}
-
 </script>
 
 <style scoped>
-.login-container {
+.register-container {
   max-width: 400px;
   margin: auto;
   padding: 2rem;
