@@ -1,9 +1,9 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
-import HelloWorld from './components/HelloWorld.vue'
 
 const auth = useAuthStore()
+auth.loadFromStorage()
 </script>
 
 <template>

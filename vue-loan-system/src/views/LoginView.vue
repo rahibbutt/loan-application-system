@@ -62,7 +62,7 @@ async function handleLogin() {
   localStorage.setItem('user', JSON.stringify(data.user))
 
   auth.login(data.user, data.token)
-  router.push({ name: 'home' }) // or '/' if not using named routes
+  router.push({ name: 'application' }) // or '/' if not using named routes
 } catch (err) {
   console.error('Login error:', err)
   error.value =
