@@ -104,21 +104,21 @@ app.post('/auth/register', async (req, res) => {
 });
 
 // GET /profile (protected)
-app.get('/profile', authMiddleware, async (req, res) => {
-  try {
-    const [rows] = await pool.query('SELECT id, name, email FROM user WHERE id = ?', [req.user.id]);
-    const user = rows[0];
+// app.get('/profile', authMiddleware, async (req, res) => {
+//   try {
+//     const [rows] = await pool.query('SELECT id, name, email FROM user WHERE id = ?', [req.user.id]);
+//     const user = rows[0];
 
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
+//     if (!user) {
+//       return res.status(404).json({ message: 'User not found' });
+//     }
 
-    res.json({ user });
-  } catch (err) {
-    console.error('Profile fetch error:', err);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-});
+//     res.json({ user });
+//   } catch (err) {
+//     console.error('Profile fetch error:', err);
+//     res.status(500).json({ message: 'Internal server error' });
+//   }
+// });
 
 // Start server
 app.listen(process.env.PORT, () => {

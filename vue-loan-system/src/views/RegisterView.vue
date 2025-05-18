@@ -46,13 +46,20 @@ const handleRegister = async () => {
       email: email.value,
       password: password.value
     })
+
+    console.log('Registration response:', res)
+
     alert('Registration successful! You can now log in.')
+    router.push({ name: '/auth/login' }) // or '/auth/login'
   } catch (err) {
+    console.error('Registration error:', err)
     alert(err.response?.data?.message || 'Registration failed')
   } finally {
     loading.value = false
   }
 }
+
+
 </script>
 
 <style scoped>
