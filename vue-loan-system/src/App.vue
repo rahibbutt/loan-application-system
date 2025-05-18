@@ -7,93 +7,89 @@ const auth = useAuthStore()
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="Welcome!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink v-if="!auth.isAuthenticated" to="/auth/login">Login</RouterLink>
-        <RouterLink v-if="!auth.isAuthenticated" to="/auth/register">Register</RouterLink>
-        <button v-else @click="auth.logout">Logout</button>
-      </nav>
+  <div id="app-container">
+    <!-- Left Panel -->
+    <div class="left-panel">
+      <img src="./assets/loan.png" alt="Loan illustration" class="loan-image" />
     </div>
-  </header>
 
-  <RouterView />
+    <!-- Right Panel -->
+    <div class="right-panel">
+      <RouterView />
+    </div>
+  </div>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+#app-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+/* Left Panel */
+.left-panel {
+  flex: 1;
+  background-color: #428d5a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
 }
 
-nav {
-  width: 100%;
-  font-size: 12px;
+.loan-image {
+  max-width: 80%;
+  height: auto;
+}
+
+/* Right Panel */
+.right-panel {
+  flex: 1;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.right-panel h1 {
+  color: #2c7a4b; /* Deep professional green */
+  font-size: 2.5rem;
+  font-weight: 700;
   text-align: center;
-  margin-top: 2rem;
+  margin-bottom: 1.5rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
+/* Button Styling */
 button {
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 1.2rem;
   background: #42b983;
   color: white;
   border: none;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 6px;
+  font-size: 1rem;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  #app-container {
+    flex-direction: column;
   }
 
-  .logo {
-    margin: 0 2rem 0 0;
+  .left-panel,
+  .right-panel {
+    flex: none;
+    width: 100%;
+    height: 50vh;
   }
 
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
+  .loan-image {
+    max-width: 60%;
   }
 }
 </style>
