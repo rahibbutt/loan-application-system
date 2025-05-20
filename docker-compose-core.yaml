@@ -146,6 +146,65 @@ services:
     networks:
       - camunda-platform
 
+#Loan application system frontend in VueJS 3
+  loan-frontend-app:
+    build: 
+      context: ./loan-frontend-app
+      dockerfile: dev.Dockerfile
+    container_name: loan-frontend-app
+    networks:
+      - camunda-platform
+    restart: always
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./loan-frontend-app/public:/app/public
+      - ./loan-frontend-app/src:/app/src
+
+#REST middleware server so frontend can communicate with the Zeebe engine
+  rest-middleware-server:
+    build:
+      context: ./rest-middleware-server
+      dockerfile: dev.Dockerfile
+    container_name: rest-middleware-server
+    networks:
+      - camunda-platform
+    restart: always
+    ports:
+      - "3005:3005"
+    volumes:
+      - ./rest-middleware-server/src:/app/src
+    depends_on:
+      - zeebe
+      - loan-frontend-app
+
+#Process application that contains all the job workers implemented in NodeJS
+  loan-process-application:
+    build:
+      context: ./loan-process-application
+      dockerfile: dev.Dockerfile
+    container_name: loan-process-application
+    networks:
+      - camunda-platform
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - zeebe
+      - elasticsearch
+    volumes:
+      - ./loan-process-application/src:/app/src
+    environment:
+      MYSQL_HOST_NAME: mysql
+      MYSQL_USER: dev
+      MYSQL_PASSWORD: dev
+      MYSQL_DATABASE: customer_DB
+      MYSQL_HOST_PORT: 3306
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE_FINISHED_PRODUCT: finished_product_DB
+      MYSQL_DATABASE_PRODUCTION: production_order_DB
+      MYSQL_DATABASE_COMPONENTS: component_DB
+
 volumes:
   zeebe:
   elastic:

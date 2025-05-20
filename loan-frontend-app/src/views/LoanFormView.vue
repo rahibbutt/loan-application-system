@@ -248,9 +248,30 @@ const form = reactive({
     applicationDate: new Date().toISOString().substr(0, 10),
 })
 
-function submitForm() {
-    console.log('Submitting loan application:', form)
-    // Post to backend or handle submission logic here
+async function submitForm() {
+  loading.value = true;
+  try {
+    const response = await fetch('http://localhost:3005/start-process-server', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        workflowKey: 'loan-application-system',
+        variables: {
+          name: name.value,
+          email: email.value,
+        },
+      }),
+    });
+
+    const data = await response.json();
+    console.log('Process started:', data);
+  } catch (error) {
+    console.error('Error starting process:', error);
+  } finally {
+    loading.value = false;
+  }
 }
 
 
