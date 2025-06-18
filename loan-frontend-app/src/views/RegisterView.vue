@@ -60,7 +60,7 @@ const handleRegister = async () => {
     console.log('Registration response:', res)
 
     alert('Registration successful! You can now log in.')
-    router.push({ name: '/auth/login' }) // or '/auth/login'
+    router.push({ name: 'login' })
   } catch (err) {
     console.error('Registration error:', err)
     alert(err.response?.data?.message || 'Registration failed')
